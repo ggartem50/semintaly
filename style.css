@@ -155,6 +155,24 @@ section p {
   color: inherit;
 }
 
+.case-link,
+.case-link * {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.case-link .case-tag {
+  color: var(--muted) !important;
+}
+
+.case-link .case p {
+  color: var(--muted) !important;
+}
+
+.case-link .case-play {
+  color: var(--accent) !important;
+}
+
 .case {
   position: relative;
   background: var(--panel);
