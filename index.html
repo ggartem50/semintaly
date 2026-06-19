@@ -11,7 +11,6 @@
 </head>
 <body>
 
-  <!-- Drifting grid background -->
   <div class="grid-bg" aria-hidden="true"></div>
 
   <header class="hero">
@@ -32,7 +31,6 @@
       </div>
     </div>
 
-    <!-- Scroll nudge -->
     <div class="scroll-hint" aria-hidden="true">
       <div class="scroll-hint-bar"></div>
       <span>SCROLL</span>
@@ -56,38 +54,32 @@
 
       <div class="case-grid">
 
-        <a class="case-link" href="https://youtu.be/EGgGoBEtLYI" target="_blank">
-          <article class="case">
-            <span class="bracket tl small" aria-hidden="true"></span>
-            <span class="bracket br small" aria-hidden="true"></span>
-            <p class="case-tag">// TECH</p>
-            <h3>Tech</h3>
-            <p>Built for a clanning environment with terminal systems, a toolbar with changeable slots, custom chat, and a leaderboard.</p>
-            <p class="case-play">▶ WATCH FOOTAGE</p>
-          </article>
-        </a>
+        <article class="case">
+          <span class="bracket tl small" aria-hidden="true"></span>
+          <span class="bracket br small" aria-hidden="true"></span>
+          <p class="case-tag">// TECH</p>
+          <h3>Tech</h3>
+          <p>Built for a clanning environment with terminal systems, a toolbar with changeable slots, custom chat, and a leaderboard.</p>
+          <a class="case-btn" href="https://youtu.be/EGgGoBEtLYI" target="_blank">▶ WATCH FOOTAGE</a>
+        </article>
 
-        <a class="case-link" href="https://youtu.be/3L5qMmvhYZ8" target="_blank">
-          <article class="case">
-            <span class="bracket tl small" aria-hidden="true"></span>
-            <span class="bracket br small" aria-hidden="true"></span>
-            <p class="case-tag">// COMBAT</p>
-            <h3>Fist Combat System</h3>
-            <p>Fluid melee framework with multi-hit combos, directional dashes, and responsive hit detection. Features stun states, arm trails, and visual hit effects for satisfying close-quarters combat.</p>
-            <p class="case-play">▶ WATCH FOOTAGE</p>
-          </article>
-        </a>
+        <article class="case">
+          <span class="bracket tl small" aria-hidden="true"></span>
+          <span class="bracket br small" aria-hidden="true"></span>
+          <p class="case-tag">// COMBAT</p>
+          <h3>Fist Combat System</h3>
+          <p>Combo-based melee system with dashes, stun states, arm trails, and hit effects.</p>
+          <a class="case-btn" href="https://youtu.be/3L5qMmvhYZ8" target="_blank">▶ WATCH FOOTAGE</a>
+        </article>
 
-        <a class="case-link" href="media/killfeed-settings.mp3" target="_blank">
-          <article class="case">
-            <span class="bracket tl small" aria-hidden="true"></span>
-            <span class="bracket br small" aria-hidden="true"></span>
-            <p class="case-tag">// CORE UI</p>
-            <h3>Killfeed &amp; Settings</h3>
-            <p>Team-colored killfeed with live HP display, plus a persisted settings system covering footsteps, hitmarkers, and visual effects via DataStore.</p>
-            <p class="case-play">▶ PLAY AUDIO</p>
-          </article>
-        </a>
+        <article class="case">
+          <span class="bracket tl small" aria-hidden="true"></span>
+          <span class="bracket br small" aria-hidden="true"></span>
+          <p class="case-tag">// CORE UI</p>
+          <h3>Killfeed &amp; Settings</h3>
+          <p>Team-colored killfeed with live HP display, plus a persisted settings system covering footsteps, hitmarkers, and visual effects via DataStore.</p>
+          <a class="case-btn" href="media/killfeed-settings.mp3" target="_blank">▶ PLAY AUDIO</a>
+        </article>
 
       </div>
     </section>
@@ -106,7 +98,6 @@
   </footer>
 
   <script>
-    /* ── Typewriter ── */
     function typewrite(el, text, delay, speed, onDone) {
       let i = 0;
       el.textContent = '';
@@ -121,40 +112,31 @@
       }, delay);
     }
 
-    /* Hero eyebrow types on load */
     const heroEyebrow = document.getElementById('hero-eyebrow');
     typewrite(heroEyebrow, '[ TARGET ACQUIRED ]', 400, 45, el => {
       el.classList.add('done');
     });
 
-    /* Section eyebrows type when scrolled into view */
-    const sectionEyebrows = document.querySelectorAll('main .eyebrow-typed');
     const fadeEls = document.querySelectorAll('.fade-in');
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-
         const el = entry.target;
-
-        /* Fade-in for sections */
         if (el.classList.contains('fade-in')) {
           el.classList.add('visible');
-          /* Type the eyebrow inside this section */
           const eyebrow = el.querySelector('.eyebrow-typed');
           if (eyebrow) {
             const text = eyebrow.getAttribute('data-text');
             typewrite(eyebrow, text, 100, 50, e => e.classList.add('done'));
           }
         }
-
         observer.unobserve(el);
       });
     }, { threshold: 0.15 });
 
     fadeEls.forEach(el => observer.observe(el));
 
-    /* Hide scroll hint once user scrolls */
     const scrollHint = document.querySelector('.scroll-hint');
     if (scrollHint) {
       window.addEventListener('scroll', () => {

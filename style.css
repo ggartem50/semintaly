@@ -36,7 +36,6 @@ h1, h2, h3 {
   margin-bottom: 0.5rem;
 }
 
-/* ── Grid background ── */
 .grid-bg {
   position: fixed;
   inset: 0;
@@ -55,7 +54,6 @@ h1, h2, h3 {
   to   { background-position: 48px 48px; }
 }
 
-/* ── Hero ── */
 .hero {
   position: relative;
   display: flex;
@@ -73,7 +71,6 @@ h1, h2, h3 {
   max-width: 560px;
 }
 
-/* Hero heading with glitch */
 .hero h1 {
   font-size: 3rem;
   font-weight: 700;
@@ -81,9 +78,7 @@ h1, h2, h3 {
   animation: fadeSlideUp 0.7s ease both 0.3s;
 }
 
-.hero h1.glitch {
-  position: relative;
-}
+.hero h1.glitch { position: relative; }
 
 .hero h1.glitch::before,
 .hero h1.glitch::after {
@@ -158,7 +153,6 @@ h1, h2, h3 {
   margin-top: 0.25rem;
 }
 
-/* ── Brackets ── */
 .bracket {
   position: absolute;
   width: 28px;
@@ -172,10 +166,7 @@ h1, h2, h3 {
 .bracket.bl { bottom: 0; left: 0; border-right: none; border-top: none; }
 .bracket.br { bottom: 0; right: 0; border-left: none; border-top: none; }
 
-/* Bracket pulse on hero */
-.hud-frame .bracket {
-  animation: bracketPulse 3s ease-in-out infinite;
-}
+.hud-frame .bracket { animation: bracketPulse 3s ease-in-out infinite; }
 .hud-frame .bracket.tr { animation-delay: 0.75s; }
 .hud-frame .bracket.bl { animation-delay: 1.5s; }
 .hud-frame .bracket.br { animation-delay: 2.25s; }
@@ -193,7 +184,6 @@ h1, h2, h3 {
   transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
 }
 
-/* ── Typewriter cursor ── */
 .eyebrow-typed::after {
   content: '█';
   color: var(--accent);
@@ -202,16 +192,13 @@ h1, h2, h3 {
   font-size: 0.7em;
 }
 
-.eyebrow-typed.done::after {
-  display: none;
-}
+.eyebrow-typed.done::after { display: none; }
 
 @keyframes blink {
   0%,100% { opacity: 1; }
   50%      { opacity: 0; }
 }
 
-/* ── Fade slide up utility ── */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -228,7 +215,6 @@ h1, h2, h3 {
   transform: translateY(0);
 }
 
-/* ── Main sections ── */
 main {
   position: relative;
   z-index: 1;
@@ -237,9 +223,7 @@ main {
   padding: 0 2rem;
 }
 
-section {
-  padding: 4rem 0;
-}
+section { padding: 4rem 0; }
 
 section h2 {
   font-size: 1.8rem;
@@ -290,67 +274,32 @@ section p {
   margin-top: 2rem;
 }
 
-.case-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.case-link,
-.case-link * {
-  text-decoration: none !important;
-  color: inherit !important;
-}
-
-.case-link .case-tag   { color: var(--muted) !important; }
-.case-link .case p     { color: var(--muted) !important; }
-.case-link .case-play  { color: var(--accent) !important; }
-
 .case {
   position: relative;
   background: var(--panel);
   border: 1px solid var(--line);
   padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   transition:
     border-color 0.2s ease,
     transform 0.25s ease,
     box-shadow 0.25s ease,
     background 0.2s ease;
-  height: 100%;
 }
 
-.case-link:hover .case,
-.case-link:focus-visible .case {
+.case:hover {
   border-color: var(--accent);
   transform: translateY(-4px);
   background: #21231f;
   box-shadow: 0 8px 32px rgba(255,106,57,0.12);
 }
 
-/* Small bracket expand on card hover */
-.case-link:hover .bracket.small,
-.case-link:focus-visible .bracket.small {
+.case:hover .bracket.small {
   width: 22px;
   height: 22px;
   border-color: var(--accent);
-}
-
-.case-link:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.case-play {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  margin-top: 1rem;
-  transition: letter-spacing 0.2s ease;
-}
-
-.case-link:hover .case-play {
-  letter-spacing: 0.18em;
 }
 
 .case-tag {
@@ -369,9 +318,30 @@ section p {
 .case p {
   color: var(--muted);
   font-size: 0.95rem;
+  flex: 1;
 }
 
-/* ── Footer ── */
+/* ── Button ── */
+.case-btn {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.45rem 1rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  text-decoration: none;
+  align-self: flex-start;
+  transition: background 0.2s ease, color 0.2s ease, letter-spacing 0.2s ease;
+}
+
+.case-btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  letter-spacing: 0.18em;
+}
+
 footer {
   position: relative;
   z-index: 1;
@@ -383,7 +353,6 @@ footer {
   border-top: 1px solid var(--line);
 }
 
-/* ── Scroll indicator ── */
 .scroll-hint {
   position: absolute;
   bottom: 2rem;
@@ -419,14 +388,12 @@ footer {
   50%      { transform: translateX(-50%) translateY(4px); }
 }
 
-/* ── Responsive ── */
 @media (max-width: 600px) {
   .hud-frame  { padding: 2rem 1.5rem; }
   .hero h1    { font-size: 2.2rem; }
   .stat-row   { flex-wrap: wrap; gap: 1.5rem; }
 }
 
-/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   .grid-bg,
