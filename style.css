@@ -19,6 +19,7 @@ body {
   color: var(--text);
   font-family: "Inter", sans-serif;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 h1, h2, h3 {
@@ -35,13 +36,34 @@ h1, h2, h3 {
   margin-bottom: 0.5rem;
 }
 
-/* Hero */
+/* ── Grid background ── */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.35;
+  animation: gridDrift 30s linear infinite;
+}
+
+@keyframes gridDrift {
+  from { background-position: 0 0; }
+  to   { background-position: 48px 48px; }
+}
+
+/* ── Hero ── */
 .hero {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 80vh;
   padding: 2rem;
+  z-index: 1;
 }
 
 .hud-frame {
@@ -51,16 +73,63 @@ h1, h2, h3 {
   max-width: 560px;
 }
 
+/* Hero heading with glitch */
 .hero h1 {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  animation: fadeSlideUp 0.7s ease both 0.3s;
+}
+
+.hero h1.glitch {
+  position: relative;
+}
+
+.hero h1.glitch::before,
+.hero h1.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.hero h1.glitch::before {
+  color: #00ffe0;
+  clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+  animation: glitch1 5s infinite;
+  opacity: 0;
+}
+
+.hero h1.glitch::after {
+  color: #ff2d6b;
+  clip-path: polygon(0 55%, 100% 55%, 100% 70%, 0 70%);
+  animation: glitch2 5s infinite;
+  opacity: 0;
+}
+
+@keyframes glitch1 {
+  0%,88%,100% { opacity:0; transform:translateX(0); }
+  89%          { opacity:1; transform:translateX(-3px); }
+  91%          { opacity:0; }
+  93%          { opacity:1; transform:translateX(3px); }
+  95%          { opacity:0; }
+}
+
+@keyframes glitch2 {
+  0%,88%,100% { opacity:0; transform:translateX(0); }
+  90%          { opacity:1; transform:translateX(3px); }
+  92%          { opacity:0; }
+  94%          { opacity:1; transform:translateX(-3px); }
+  96%          { opacity:0; }
 }
 
 .tagline {
   color: var(--muted);
   font-size: 1.1rem;
   margin-bottom: 2rem;
+  animation: fadeSlideUp 0.7s ease both 0.5s;
 }
 
 .stat-row {
@@ -68,6 +137,7 @@ h1, h2, h3 {
   justify-content: center;
   gap: 2.5rem;
   font-family: "IBM Plex Mono", monospace;
+  animation: fadeSlideUp 0.7s ease both 0.7s;
 }
 
 .stat {
@@ -88,12 +158,13 @@ h1, h2, h3 {
   margin-top: 0.25rem;
 }
 
-/* Corner brackets */
+/* ── Brackets ── */
 .bracket {
   position: absolute;
   width: 28px;
   height: 28px;
   border: 2px solid var(--accent);
+  transition: width 0.3s ease, height 0.3s ease;
 }
 
 .bracket.tl { top: 0; left: 0; border-right: none; border-bottom: none; }
@@ -101,15 +172,66 @@ h1, h2, h3 {
 .bracket.bl { bottom: 0; left: 0; border-right: none; border-top: none; }
 .bracket.br { bottom: 0; right: 0; border-left: none; border-top: none; }
 
+/* Bracket pulse on hero */
+.hud-frame .bracket {
+  animation: bracketPulse 3s ease-in-out infinite;
+}
+.hud-frame .bracket.tr { animation-delay: 0.75s; }
+.hud-frame .bracket.bl { animation-delay: 1.5s; }
+.hud-frame .bracket.br { animation-delay: 2.25s; }
+
+@keyframes bracketPulse {
+  0%,100% { border-color: var(--accent); opacity: 1; }
+  50%      { border-color: var(--khaki); opacity: 0.5; }
+}
+
 .bracket.small {
   width: 16px;
   height: 16px;
   border-width: 1.5px;
   border-color: var(--khaki);
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
 }
 
-/* Main sections */
+/* ── Typewriter cursor ── */
+.eyebrow-typed::after {
+  content: '█';
+  color: var(--accent);
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+  font-size: 0.7em;
+}
+
+.eyebrow-typed.done::after {
+  display: none;
+}
+
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ── Fade slide up utility ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Main sections ── */
 main {
+  position: relative;
+  z-index: 1;
   max-width: 900px;
   margin: 0 auto;
   padding: 0 2rem;
@@ -130,10 +252,29 @@ section p {
 }
 
 .divider {
+  position: relative;
+  z-index: 1;
   height: 1px;
   background: var(--line);
   max-width: 900px;
   margin: 0 auto;
+  overflow: hidden;
+}
+
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scanLine 4s ease-in-out infinite;
+}
+
+@keyframes scanLine {
+  0%   { left: -60%; }
+  100% { left: 160%; }
 }
 
 .highlight {
@@ -141,7 +282,7 @@ section p {
   font-family: "IBM Plex Mono", monospace;
 }
 
-/* Case grid */
+/* ── Case grid ── */
 .case-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -161,29 +302,36 @@ section p {
   color: inherit !important;
 }
 
-.case-link .case-tag {
-  color: var(--muted) !important;
-}
-
-.case-link .case p {
-  color: var(--muted) !important;
-}
-
-.case-link .case-play {
-  color: var(--accent) !important;
-}
+.case-link .case-tag   { color: var(--muted) !important; }
+.case-link .case p     { color: var(--muted) !important; }
+.case-link .case-play  { color: var(--accent) !important; }
 
 .case {
   position: relative;
   background: var(--panel);
   border: 1px solid var(--line);
   padding: 1.75rem;
-  transition: border-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.2s ease;
   height: 100%;
 }
 
 .case-link:hover .case,
 .case-link:focus-visible .case {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  background: #21231f;
+  box-shadow: 0 8px 32px rgba(255,106,57,0.12);
+}
+
+/* Small bracket expand on card hover */
+.case-link:hover .bracket.small,
+.case-link:focus-visible .bracket.small {
+  width: 22px;
+  height: 22px;
   border-color: var(--accent);
 }
 
@@ -198,6 +346,11 @@ section p {
   letter-spacing: 0.08em;
   color: var(--accent);
   margin-top: 1rem;
+  transition: letter-spacing 0.2s ease;
+}
+
+.case-link:hover .case-play {
+  letter-spacing: 0.18em;
 }
 
 .case-tag {
@@ -218,8 +371,10 @@ section p {
   font-size: 0.95rem;
 }
 
-/* Footer */
+/* ── Footer ── */
 footer {
+  position: relative;
+  z-index: 1;
   text-align: center;
   padding: 2rem;
   color: var(--muted);
@@ -228,23 +383,66 @@ footer {
   border-top: 1px solid var(--line);
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .hud-frame {
-    padding: 2rem 1.5rem;
-  }
-  .hero h1 {
-    font-size: 2.2rem;
-  }
-  .stat-row {
-    flex-wrap: wrap;
-    gap: 1.5rem;
-  }
+/* ── Scroll indicator ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.4;
+  animation: bounce 2s ease-in-out infinite;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
 }
 
-/* Reduced motion respect */
+.scroll-hint-bar {
+  width: 1px;
+  height: 32px;
+  background: var(--muted);
+  animation: grow 2s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes grow {
+  0%,100% { transform: scaleY(0.3); opacity: 0.3; }
+  50%      { transform: scaleY(1); opacity: 1; }
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(4px); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .hud-frame  { padding: 2rem 1.5rem; }
+  .hero h1    { font-size: 2.2rem; }
+  .stat-row   { flex-wrap: wrap; gap: 1.5rem; }
+}
+
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  .grid-bg,
+  .hero h1.glitch::before,
+  .hero h1.glitch::after,
+  .divider::after,
+  .scroll-hint,
+  .scroll-hint-bar,
+  .hud-frame .bracket {
+    animation: none !important;
     transition: none !important;
+  }
+
+  .fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

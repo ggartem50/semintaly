@@ -11,41 +11,55 @@
 </head>
 <body>
 
+  <!-- Drifting grid background -->
+  <div class="grid-bg" aria-hidden="true"></div>
+
   <header class="hero">
     <div class="hud-frame">
-      <span class="bracket tl"></span>
-      <span class="bracket tr"></span>
-      <span class="bracket bl"></span>
-      <span class="bracket br"></span>
-      <p class="eyebrow">[ TARGET ACQUIRED ]</p>
-      <h1>SEMINTALY</h1>
-      <p class="tagline">Roblox Systems & Gameplay Scripter</p>
+      <span class="bracket tl" aria-hidden="true"></span>
+      <span class="bracket tr" aria-hidden="true"></span>
+      <span class="bracket bl" aria-hidden="true"></span>
+      <span class="bracket br" aria-hidden="true"></span>
+
+      <p class="eyebrow eyebrow-typed" id="hero-eyebrow" aria-label="TARGET ACQUIRED"></p>
+      <h1 class="glitch" data-text="SEMINTALY">SEMINTALY</h1>
+      <p class="tagline">Roblox Systems &amp; Gameplay Scripter</p>
       <div class="stat-row">
-        <div class="stat"><span class="stat-label">ENGINE</span><span class="stat-value">ROBLOX / LUAU</span></div>
+        <div class="stat">
+          <span class="stat-label">ENGINE</span>
+          <span class="stat-value">ROBLOX / LUAU</span>
+        </div>
       </div>
+    </div>
+
+    <!-- Scroll nudge -->
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-hint-bar"></div>
+      <span>SCROLL</span>
     </div>
   </header>
 
   <main>
-    <section class="about">
-      <p class="eyebrow">[ ABOUT ]</p>
+    <section class="about fade-in">
+      <p class="eyebrow eyebrow-typed" data-text="[ ABOUT ]" aria-label="ABOUT"></p>
       <h2>Briefing</h2>
       <p>I build and maintain a wide range of Roblox systems, from combat frameworks and game modes to UI, progression, networking, and backend functionality. I focus on creating responsive, reliable, and scalable solutions that enhance gameplay and player experience. My development process is highly iterative, relying on extensive testing and real gameplay observations to ensure quality and performance.</p>
+      <br>
       <p>My primary expertise lies in gameplay and systems development, with vehicle-specific mechanics being an area I have less experience in compared to other disciplines.</p>
     </section>
 
     <div class="divider"></div>
 
-    <section class="projects">
-      <p class="eyebrow">[ PROJECTS ]</p>
+    <section class="projects fade-in">
+      <p class="eyebrow eyebrow-typed" data-text="[ PROJECTS ]" aria-label="PROJECTS"></p>
       <h2>Case Files</h2>
 
       <div class="case-grid">
 
         <a class="case-link" href="https://youtu.be/EGgGoBEtLYI" target="_blank">
           <article class="case">
-            <span class="bracket tl small"></span>
-            <span class="bracket br small"></span>
+            <span class="bracket tl small" aria-hidden="true"></span>
+            <span class="bracket br small" aria-hidden="true"></span>
             <p class="case-tag">// HITSCAN WEAPON SYSTEM</p>
             <h3>Gun System</h3>
             <p>Two-ray hitscan architecture with server-side damage validation, team-colored tracers, headshot detection, floating damage indicators, and a live accuracy tracker.</p>
@@ -55,8 +69,8 @@
 
         <a class="case-link" href="media/capture-point.mp3" target="_blank">
           <article class="case">
-            <span class="bracket tl small"></span>
-            <span class="bracket br small"></span>
+            <span class="bracket tl small" aria-hidden="true"></span>
+            <span class="bracket br small" aria-hidden="true"></span>
             <p class="case-tag">// GAME MODE</p>
             <h3>Capture Point System</h3>
             <p>Single active capture point with instant captures, a terminal-driven start/stop flow, and clean state guards to keep matches consistent.</p>
@@ -66,10 +80,10 @@
 
         <a class="case-link" href="media/killfeed-settings.mp3" target="_blank">
           <article class="case">
-            <span class="bracket tl small"></span>
-            <span class="bracket br small"></span>
+            <span class="bracket tl small" aria-hidden="true"></span>
+            <span class="bracket br small" aria-hidden="true"></span>
             <p class="case-tag">// CORE UI</p>
-            <h3>Killfeed & Settings</h3>
+            <h3>Killfeed &amp; Settings</h3>
             <p>Team-colored killfeed with live HP display, plus a persisted settings system covering footsteps, hitmarkers, and visual effects via DataStore.</p>
             <p class="case-play">▶ PLAY AUDIO</p>
           </article>
@@ -80,8 +94,8 @@
 
     <div class="divider"></div>
 
-    <section class="contact">
-      <p class="eyebrow">[ CONTACT ]</p>
+    <section class="contact fade-in">
+      <p class="eyebrow eyebrow-typed" data-text="[ CONTACT ]" aria-label="CONTACT"></p>
       <h2>Open Channel</h2>
       <p>Discord: <span class="highlight">@semintaly</span></p>
     </section>
@@ -90,6 +104,67 @@
   <footer>
     <p>&copy; 2026 Semintaly — Built on GitHub Pages</p>
   </footer>
+
+  <script>
+    /* ── Typewriter ── */
+    function typewrite(el, text, delay, speed, onDone) {
+      let i = 0;
+      el.textContent = '';
+      setTimeout(() => {
+        const t = setInterval(() => {
+          el.textContent += text[i++];
+          if (i >= text.length) {
+            clearInterval(t);
+            if (onDone) onDone(el);
+          }
+        }, speed);
+      }, delay);
+    }
+
+    /* Hero eyebrow types on load */
+    const heroEyebrow = document.getElementById('hero-eyebrow');
+    typewrite(heroEyebrow, '[ TARGET ACQUIRED ]', 400, 45, el => {
+      el.classList.add('done');
+    });
+
+    /* Section eyebrows type when scrolled into view */
+    const sectionEyebrows = document.querySelectorAll('main .eyebrow-typed');
+    const fadeEls = document.querySelectorAll('.fade-in');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        const el = entry.target;
+
+        /* Fade-in for sections */
+        if (el.classList.contains('fade-in')) {
+          el.classList.add('visible');
+          /* Type the eyebrow inside this section */
+          const eyebrow = el.querySelector('.eyebrow-typed');
+          if (eyebrow) {
+            const text = eyebrow.getAttribute('data-text');
+            typewrite(eyebrow, text, 100, 50, e => e.classList.add('done'));
+          }
+        }
+
+        observer.unobserve(el);
+      });
+    }, { threshold: 0.15 });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    /* Hide scroll hint once user scrolls */
+    const scrollHint = document.querySelector('.scroll-hint');
+    if (scrollHint) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 80) {
+          scrollHint.style.opacity = '0';
+          scrollHint.style.transition = 'opacity 0.5s ease';
+        }
+      }, { passive: true });
+    }
+  </script>
 
 </body>
 </html>
